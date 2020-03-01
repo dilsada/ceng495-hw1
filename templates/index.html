@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        CENG495 HW1
+        <br />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>
+    
+    </title>
+    </head>
+    
+    <body>
+        <div>hello world</div>
+        <div>{{districts}}</div>
+
+        <form action="/" method="POST" id="distform">
+            <select name="districts">
+                {% for district in districts %}
+                <option value="{{district}}" selected>{{district}}</option>
+                {% endfor %}
+            </select>
+            <p><input type = "submit" value = "Select District" /></p>
+        </form>
+        
+        
+    </body>
+
+</html>
+
+
+
+
