@@ -31,6 +31,12 @@ def index():
     return render_template("index.html", districts = districts)
 
 
+@app.route("/result", methods=['POST', 'GET'])
+def result():
+    if request.method == 'POST':
+        parkName = request.form['parks']
+        return render_template("result.html", name = parkName)
+
 '''
 @app.route('/', methods=['POST'])
 def my_form_post():

@@ -9,7 +9,7 @@
 <body>
     <div>hello world</div>
 
-    <form>
+    <form action="/result" method="POST">
         <select name="districts" id="districts">
             <option></option>
         </select>
@@ -43,10 +43,10 @@
             }
         });
 
-        form.submit(function(event) {
+        /*form.submit(function(event) {
             event.preventDefault();
             console.log("You chose " + park.val() + " in " + district.val());
-        });
+        });*/
     </script>
     
 </body>
