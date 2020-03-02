@@ -24,18 +24,28 @@ def getDistricts(parkData):
             districts[key].append(parkName)
     return districts
 
-@app.route("/")
+def getParkInfo(parkData, parkName):
+    for park in parkData:
+        if park['ParkAdi'] == parkName:
+            return park['BosKapasite'], park['Kapasitesi'], park['Latitude'], park['Longitude']
+
+
+@app.route("/", methods=['POST', 'GET'])
 def index():
     data = getData()
     districts = getDistricts(data)
-    return render_template("index.html", districts = districts)
 
-
-@app.route("/result", methods=['POST', 'GET'])
-def result():
     if request.method == 'POST':
+        
         parkName = request.form['parks']
-        return render_template("result.html", name = parkName)
+        empty, capacity, latitude, longitude = getParkInfo(data, parkName)
+        parkInfo = {'parkName': parkName, 'emptySpots': empty, 'capacity': capacity, 'lat': latitude, 'long': longitude }
+
+        return render_template("index.html", districts = districts, parkInfo = parkInfo)
+    
+    else:    
+        return render_template("index.html", districts = districts, parkInfo = '')
+    
 
 '''
 @app.route('/', methods=['POST'])

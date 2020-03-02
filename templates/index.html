@@ -4,12 +4,24 @@
     CENG495 HW1
     <br />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css">
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
+    
+<style>
+    .map {
+      height: 300px;
+      width: 40%;
+    }
+</style>
+
 </head>
 
 <body>
     <div>hello world</div>
 
-    <form action="/result" method="POST">
+    <form action="/" method="POST">
         <select name="districts" id="districts">
             <option></option>
         </select>
@@ -18,8 +30,7 @@
         </select>
         <button type="submit">Search Parking Spots</button>
     </form>
-    
-    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+
     <script>
         "use strict";
         
@@ -48,6 +59,35 @@
             console.log("You chose " + park.val() + " in " + district.val());
         });*/
     </script>
+
+    {% if parkInfo != '' %}
+        <div>Your park is: {{parkInfo}}</div>
+    {% else %}
+        <div>Please choose a car park</div>
+    {% endif %}
+    
+    <div id="map" class="map"></div>
+
+    <script type="text/javascript">
+        var parkInfo = {{ parkInfo|tojson}};
+        console.log(parkInfo['long']);
+        console.log(parkInfo['lat']);
+        
+        var map = new ol.Map({
+          target: 'map',
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            })
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([parkInfo['long'],parkInfo['lat']]),
+            zoom: 15
+          })
+        });
+    </script>
+    
+    
     
 </body>
 
