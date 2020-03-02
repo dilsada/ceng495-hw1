@@ -4,47 +4,31 @@ import json
 
 app = Flask(__name__)
 
-def getDistricts():
+def getData():
     url = 'https://api.ibb.gov.tr/ispark/Park'
     response = requests.get(url)
     parkData = json.loads(response.text)
-    
+    return parkData
+
+def getDistricts(parkData):    
     districts = {}
 
     for park in parkData:
+
         key = park['Ilce']
+        parkName = park['ParkAdi']
+        
         if key not in districts.keys():
-            districts[key] = [park]
+            districts[key] = [parkName]
         else:
-            districts[key].append(park)
+            districts[key].append(parkName)
     return districts
 
-def getParkNames(parks):
-    parksNames = []
-    for park in parks:
-        name = park['ParkAdi']
-        parksNames.append(name)
-    return parksNames
-
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/")
 def index():
-    districts = getDistricts()
-    
-    if request.method == 'POST':
-        option = request.form.get('districts')
-        parks = getParkNames(districts[str(option)])
-        return render_template("index.html", districts = districts.keys(), parks = parks)
-        
-    else:    
-        return render_template("index.html", districts = districts.keys(), parks = '')
-        
-
-
-#@app.route('/', methods=['POST'])
-#def showParks():   
-    #url = 'https://api.ibb.gov.tr/ispark/Park'
-    #parksList = []
-    #for key,value in url.items():
+    data = getData()
+    districts = getDistricts(data)
+    return render_template("index.html", districts = districts)
 
 
 '''

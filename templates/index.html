@@ -1,28 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        CENG495 HW1
-        <br />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>
-    
-    </title>
-    </head>
-    
-    <body>
-        <div>hello world</div>
-        <div>{{districts}}</div>
+<head>
+    CENG495 HW1
+    <br />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
 
-        <form action="/" method="POST" id="distform">
-            <select name="districts">
-                {% for district in districts %}
-                <option value="{{district}}" selected>{{district}}</option>
-                {% endfor %}
-            </select>
-            <p><input type = "submit" value = "Select District" /></p>
-        </form>
+<body>
+    <div>hello world</div>
+
+    <form>
+        <select name="districts" id="districts">
+            <option></option>
+        </select>
+        <select name="parks" id="parks">
+            <option></option>
+        </select>
+        <button type="submit">Search Parking Spots</button>
+    </form>
+    
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+        "use strict";
         
-        
-    </body>
+        var districts = {{ districts|tojson }};
+        var form = $('form');
+        var district = $('select#districts');
+        var park = $('select#parks');
+
+        for(var key in districts){
+            district.append($('<option/>', {'value': key, 'text': key}));
+        }
+
+        district.change(function(event){
+            park.empty();
+
+            var parks = districts[String(district.val())];
+            console.log(String(parks));
+
+            for (var item in parks) {
+                park.append($('<option/>', {'value': parks[item], 'text': parks[item]}));
+            }
+        });
+
+        form.submit(function(event) {
+            event.preventDefault();
+            console.log("You chose " + park.val() + " in " + district.val());
+        });
+    </script>
+    
+</body>
 
 </html>
 
