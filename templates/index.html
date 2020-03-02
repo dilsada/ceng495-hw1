@@ -1,36 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    CENG495 HW1
-    <br />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}" type="text/css"/>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css">
-<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
-    
-<style>
-    .map {
-      height: 300px;
-      width: 40%;
-    }
-</style>
-
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
 </head>
 
 <body>
-    <div>hello world</div>
+    <div class="header1">CENG495 Cloud Computing</div>
+    <div class="header2">Assignment 1</div>
 
-    <form action="/" method="POST">
-        <select name="districts" id="districts">
-            <option></option>
-        </select>
-        <select name="parks" id="parks">
-            <option></option>
-        </select>
-        <button type="submit">Search Parking Spots</button>
-    </form>
-
+    <div class="form">
+        <form action="/" method="POST">
+            <select name="districts" id="districts">
+                <option></option>
+            </select>
+            <select name="parks" id="parks">
+                <option></option>
+            </select>
+            <button type="submit">Search Parking Spots</button>
+        </form>    
+    </div>
+    
     <script>
         "use strict";
         
@@ -61,12 +54,15 @@
     </script>
 
     {% if parkInfo != '' %}
-        <div>Your park is: {{parkInfo}}</div>
+        <div class="info">Park Information for {{parkInfo['parkName']}} <br>
+            Empty Spots: {{parkInfo['emptySpots']}} <br>
+            Total Capacity: {{parkInfo['capacity']}} <br>
+            Location:
+        </div>    
+        <div id="map" class="map"></div>
     {% else %}
-        <div>Please choose a car park</div>
+        <div class="info">Please choose a car park.</div>
     {% endif %}
-    
-    <div id="map" class="map"></div>
 
     <script type="text/javascript">
         var parkInfo = {{ parkInfo|tojson}};
@@ -82,7 +78,7 @@
           ],
           view: new ol.View({
             center: ol.proj.fromLonLat([parkInfo['long'],parkInfo['lat']]),
-            zoom: 15
+            zoom: 18
           })
         });
     </script>
